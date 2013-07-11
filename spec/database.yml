@@ -1,0 +1,6 @@
+postgresql:
+  adapter: postgresql
+  username: postgres
+  password: postgres
+  database: activerecord-column_metadata_test
+  min_messages: ERROR
