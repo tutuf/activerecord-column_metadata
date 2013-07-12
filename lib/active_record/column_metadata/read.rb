@@ -3,7 +3,7 @@ require 'json'
 module ActiveRecord
   class ColumnMetadata
     # Retrieves metadata stored in the database for +table_name+ as
-    # [["col_name", {"key" => "val"}], ...]
+    # [["col_name", {"key" => "val"}], ...] ordered by col_name alphabetically
     def self.to_a(table_name)
       res = ActiveRecord::Base.connection.query(<<-END_SQL, 'Get comments')
         SELECT a.attname,

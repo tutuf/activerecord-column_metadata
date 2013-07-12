@@ -52,6 +52,10 @@ module ActiveRecord
       end
       alias_method_chain :add_column, :metadata
       
+      def column_metadata(table_name, column_name, metadata)
+        write_json_comment(table_name, column_name, metadata)
+      end
+      
       def write_json_comment(table_name, column_name, comment)
         execute "COMMENT ON COLUMN #{quote_table_name(table_name)}.#{quote_column_name(column_name)} IS #{quote(comment.to_json)}"
       end

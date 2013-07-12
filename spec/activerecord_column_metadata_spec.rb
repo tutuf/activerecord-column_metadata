@@ -31,7 +31,7 @@ describe ActiveRecord::ColumnMetadata do
       add_column :people, :surname, :string, :metadata => {full_text_search: "double_metaphone"}
     end
   end
-
+  
   describe 'write should add JSON in comment' do
     it 'with create_table' do
       CreateTableMigration.up
@@ -39,11 +39,24 @@ describe ActiveRecord::ColumnMetadata do
       expect(res).to include( ["name",'{"something":true}'])
     end
   
-    it 'with add_collumn' do
+    it 'with add_column' do
       CreateTableMigration.up
       AddColumnMigration.up
       res = get_comments("people")
       expect(res).to include( ['surname', '{"full_text_search":"double_metaphone"}'])
+    end
+
+    class AddColumnMetadataMigration < ActiveRecord::Migration
+      def self.up
+        column_metadata :people, :name, {completely: "different"}
+      end
+    end
+    
+    it 'with add_column_metadata' do
+      CreateTableMigration.up
+      AddColumnMetadataMigration.up
+      res = get_comments("people")
+      expect(res).to include( ['name', '{"completely":"different"}'])
     end
   end
   
