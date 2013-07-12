@@ -1,5 +1,5 @@
 module ActiveRecord
   class ColumnMetadata
-    VERSION = "0.0.1"
+    VERSION = "0.0.2"
   end
 end

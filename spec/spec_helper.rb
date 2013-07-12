@@ -4,7 +4,7 @@ require 'database_cleaner'
 require 'active_record'
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'active_record/column_metadata'
+require 'activerecord-column_metadata'
 
 ActiveRecord::Base.logger = Logger.new(File.dirname(__FILE__) + '/debug.log')
 ActiveRecord::Base.configurations = YAML::load_file(File.dirname(__FILE__) + '/database.yml')
