@@ -52,7 +52,7 @@ describe ActiveRecord::ColumnMetadata do
       end
     end
 
-    it 'with add_column_metadata' do
+    it 'with column_metadata' do
       CreateTableMigration.up
       AddColumnMetadataMigration.up
       res = get_comments("people")
