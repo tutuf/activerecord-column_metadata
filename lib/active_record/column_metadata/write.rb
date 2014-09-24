@@ -57,7 +57,7 @@ module ActiveRecord
       end
 
       def write_json_comment(table_name, column_name, comment)
-        execute "COMMENT ON COLUMN #{quote_table_name(table_name)}.#{quote_column_name(column_name)} IS #{quote(comment.to_json)}"
+        execute "COMMENT ON COLUMN #{quote_table_name(table_name)}.#{quote_column_name(column_name)} IS #{quote(comment.to_json)}" unless comment.blank?
       end
     end
   end

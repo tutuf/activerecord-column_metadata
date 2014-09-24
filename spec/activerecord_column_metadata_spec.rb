@@ -58,6 +58,27 @@ describe ActiveRecord::ColumnMetadata do
       res = get_comments("people")
       expect(res).to include( ['name', '{"completely":"different"}'])
     end
+
+    class AddColumnWithoutMetadataMigration < ActiveRecord::Migration
+      def self.up
+        add_column :people, :surname, :string
+      end
+    end
+
+    class CreateTableWithoutMetadataMigration < ActiveRecord::Migration
+      def self.up
+        create_table(:people) do |t|
+          t.string :name
+        end
+      end
+    end
+
+    it 'without any metadata given' do
+      CreateTableWithoutMetadataMigration.up
+      AddColumnWithoutMetadataMigration.up
+      res = get_comments('people')
+      expect(res).to contain_exactly ["id", nil], ["name", nil], ["surname", nil]
+    end
   end
 
   describe 'read' do
