@@ -25,20 +25,20 @@ describe ActiveRecord::ColumnMetadata do
       end
     end
   end
-  
+
   class AddColumnMigration < ActiveRecord::Migration
     def self.up
       add_column :people, :surname, :string, :metadata => {full_text_search: "double_metaphone"}
     end
   end
-  
+
   describe 'write should add JSON in comment' do
     it 'with create_table' do
       CreateTableMigration.up
       res = get_comments("people")
       expect(res).to include( ["name",'{"something":true}'])
     end
-  
+
     it 'with add_column' do
       CreateTableMigration.up
       AddColumnMigration.up
@@ -51,20 +51,41 @@ describe ActiveRecord::ColumnMetadata do
         column_metadata :people, :name, {completely: "different"}
       end
     end
-    
+
     it 'with add_column_metadata' do
       CreateTableMigration.up
       AddColumnMetadataMigration.up
       res = get_comments("people")
       expect(res).to include( ['name', '{"completely":"different"}'])
     end
+
+    class AddColumnWithoutMetadataMigration < ActiveRecord::Migration
+      def self.up
+        add_column :people, :surname, :string
+      end
+    end
+
+    class CreateTableWithoutMetadataMigration < ActiveRecord::Migration
+      def self.up
+        create_table(:people) do |t|
+          t.string :name
+        end
+      end
+    end
+
+    it 'without any metadata given' do
+      CreateTableWithoutMetadataMigration.up
+      AddColumnWithoutMetadataMigration.up
+      res = get_comments('people')
+      expect(res).to contain_exactly ["id", nil], ["name", nil], ["surname", nil]
+    end
   end
-  
+
   describe 'read' do
     it '#to_a should return a column comments as an array of arrays' do
       CreateTableMigration.up
       res = ActiveRecord::ColumnMetadata.to_a(:people)
       res.should == [["name", {"something" => true}]]
     end
-  end 
+  end
 end
