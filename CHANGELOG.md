@@ -1,6 +1,8 @@
 ## 0.1.0 (24 September 2014)
 
-Fix add_column with no metadata
+*  Fix add_column with no metadata (thanks to Mario Daskalov)
+
+*  Depend on ActiveRecord 3.x instead of 3.0.x (thanks to Mihail Grigorov)
 
 ## 0.0.3 (12 July 2013)
 
