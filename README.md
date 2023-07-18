@@ -44,7 +44,7 @@ And then you can say in the model:
 
     class Car < ActiveRecord::Base
       def self.extras
-        ActiveRecord::JsonMetadata.to_a("cars").select do |arr|
+        ActiveRecord::ColumnMetadata.to_a("cars").select do |arr|
           column_name, metadata = arr
           column_name if metadata["extra"] == true
         end
